@@ -14,16 +14,18 @@ public class Movement : MonoBehaviour {
 	private Ray toFloor;
 	private Ray testShot;
 	private float cameraRotY = 0f;
-	public enum state {WALKING, AUTO, GUILOCK};
+	public enum state {WALKING, AUTO, GUILOCK, FALLING};
 	public state curState;
 	private Vector3 temp;
 	private Quaternion tempQ;
+	private Rigidbody rb;
 
 
 	// Use this for initialization
 	void Start () 
 	{
 		vel = new Vector3 ();
+		rb = GetComponent<Rigidbody> ();
 		controller = GetComponent<CharacterController> ();
 		camera = GetComponentInChildren<Camera> ();
 		toFloor = new Ray (transform.position, -1 * transform.up);
@@ -38,29 +40,80 @@ public class Movement : MonoBehaviour {
 	// Update is called once per frame
 	void Update () 
 	{
+		// Mouse click interaction handling
+		// If the object that is clicked has an "Interactable" tag, call the "OnPlayerClicked" function
+		// on its attached script.
+		if (Input.GetButtonDown("Fire1") && curState == state.WALKING)
+		{
+			RaycastHit hitInfo = new RaycastHit();
+			if (Physics.Raycast(camera.ViewportPointToRay(new Vector3(.5f,.5f,0f)), out hitInfo, 2.5f))
+			{
+				if (hitInfo.collider.gameObject.CompareTag("Interactable"))
+				{
+					hitInfo.collider.gameObject.SendMessage("OnPlayerClicked",SendMessageOptions.DontRequireReceiver);
+				}
+			}
+		}
+
 		camera.transform.localRotation = Quaternion.Euler (camera.transform.localRotation.eulerAngles.x, 0, 0);
-		if (curState == state.WALKING)
+		if (curState == state.WALKING) 
 		{
 			vel.x = Input.GetAxisRaw ("Horizontal");
-			vel.y = 0; 
+			vel.y = 0;
 			vel.z = Input.GetAxisRaw ("Vertical");
 			vel = transform.TransformDirection (vel);
 			vel.Normalize ();
 			toFloor.origin = transform.position;
 			toFloor.direction = -1 * transform.up;
-			Physics.Raycast (toFloor, out hitInfo);
-			if (!hitInfo.collider.isTrigger && Mathf.Abs (hitInfo.distance - targetHeight) > .05) 
+			if (Physics.Raycast (toFloor, out hitInfo)) 
 			{
-				transform.position = new Vector3 (transform.position.x, hitInfo.point.y + targetHeight, transform.position.z);
+				if (!hitInfo.collider.isTrigger) 
+				{
+					if (Mathf.Abs (hitInfo.distance - targetHeight) > .05 && Mathf.Abs (hitInfo.distance - targetHeight) < .15) {
+						transform.position = new Vector3 (transform.position.x, hitInfo.point.y + targetHeight, transform.position.z);
+					} 
+					else if(Mathf.Abs (hitInfo.distance - targetHeight) >= .10) 
+					{
+						curState = state.FALLING;
+					}
+				}
+			} 
+			else 
+			{
+				
 			}
 		} 
-		else if(curState == state.AUTO)
+		else if (curState == state.AUTO) 
 		{
 			vel.x = vel.y = vel.z = 0;
+		} 
+		else if (curState == state.FALLING) 
+		{
+			vel.x = Input.GetAxisRaw ("Horizontal");
+			vel.y -= 9.8f*Time.deltaTime;
+			vel.z = Input.GetAxisRaw ("Vertical");
+			vel = transform.TransformDirection (vel);
+			vel.Normalize ();
+
+			toFloor.origin = transform.position;
+			toFloor.direction = -1 * transform.up;
+			if (Physics.Raycast (toFloor, out hitInfo)) 
+			{
+				if (!hitInfo.collider.isTrigger) 
+				{
+					if(Mathf.Abs (hitInfo.distance - targetHeight) < .15) 
+					{
+						curState = state.WALKING;
+					}
+				}
+			} 
+			else 
+			{
+				
+			}
 		}
 		
 		controller.Move (moveSpeed * vel * Time.deltaTime);
-
 		transform.Rotate(Vector3.up, Input.GetAxis ("MouseX") * Time.deltaTime * sensitivity);
 
 		Vector3 goalCamRot = camera.transform.localEulerAngles;
