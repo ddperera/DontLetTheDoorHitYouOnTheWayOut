@@ -1,14 +1,18 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityStandardAssets.ImageEffects;
 
 public class Movement : MonoBehaviour {
 
 	public float moveSpeed;
 	public float sensitivity;
+	public bool isGhost;
 
 	private Camera camera;
 	public CharacterController controller;
 	public Vector3 vel;
+	private ColorCorrectionCurves colorCorrection;
+	private MotionBlur motionBlur;
 	private float targetHeight;
 	private RaycastHit hitInfo;
 	private Ray toFloor;
@@ -28,9 +32,12 @@ public class Movement : MonoBehaviour {
 		rb = GetComponent<Rigidbody> ();
 		controller = GetComponent<CharacterController> ();
 		camera = GetComponentInChildren<Camera> ();
+		colorCorrection = camera.GetComponent<ColorCorrectionCurves> ();
+		motionBlur = camera.GetComponent<MotionBlur> ();
 		toFloor = new Ray (transform.position, -1 * transform.up);
 		Physics.Raycast (toFloor, out hitInfo);
 		targetHeight = hitInfo.distance;
+		isGhost = false;
 
 		testShot = new Ray (new Vector3 (-1, 1, -3), Vector3.right);
 
@@ -125,6 +132,15 @@ public class Movement : MonoBehaviour {
 			goalCamRot.x = 80f;
 		}
 		camera.transform.localEulerAngles = goalCamRot;
+		
+		if (isGhost) {
+			colorCorrection.enabled = true;
+			motionBlur.enabled = true;
+		}
+		if (!isGhost) {
+			colorCorrection.enabled = false;
+			motionBlur.enabled = false;
+		}
 
 	}
 		
