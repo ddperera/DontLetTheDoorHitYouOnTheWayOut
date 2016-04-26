@@ -24,6 +24,7 @@ public class PlayerInteraction : MonoBehaviour {
 		interactedBefore = false;
 		isTalking = false;
 
+		dm = GameObject.FindGameObjectWithTag ("Dialogue").GetComponent<DialogManager>();
 		player = GameObject.FindGameObjectWithTag ("Player");
 	}
 
