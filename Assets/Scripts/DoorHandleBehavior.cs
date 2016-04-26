@@ -17,7 +17,7 @@ public class DoorHandleBehavior : MonoBehaviour {
 	}
 
 	public void OnPlayerClicked(){
-		//play some acquiring sound
+		//TODO play some acquiring sound
 		thePlayer.GetComponent<Inventory>().AddObject(myName, gameObject);
 		gameObject.SetActive (false);
 	}
