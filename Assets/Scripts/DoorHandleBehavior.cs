@@ -3,7 +3,7 @@ using System.Collections;
 
 public class DoorHandleBehavior : MonoBehaviour {
 
-	GameObject thePlayer;s
+	GameObject thePlayer;
 	string myName = "Level2_DoorHandle_1";
 
 	// Use this for initialization
