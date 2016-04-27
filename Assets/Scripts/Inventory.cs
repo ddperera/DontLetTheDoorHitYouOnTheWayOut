@@ -29,6 +29,16 @@ public class Inventory : MonoBehaviour {
 		myItems.Remove(name);
 	}
 
+	public void RemoveObject(GameObject item){
+		if (OwnsObject (item)) {
+			foreach (string key in myItems.Keys) {
+				if (myItems [key] == item) {
+					myItems.Remove (key);
+				}
+			}
+		}
+	}
+
 	public bool OwnsObject(string name){
 		return myItems.ContainsKey(name);
 	}
