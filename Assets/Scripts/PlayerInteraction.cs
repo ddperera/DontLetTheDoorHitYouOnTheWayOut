@@ -12,49 +12,44 @@ public class PlayerInteraction : MonoBehaviour {
 
 	public float maxDistFromPlayer = 3;
 
-	private bool isFollowing;
-	private bool isTalking;
-	private bool interactedBefore;
+	public enum state {FOLLOWING, IDLE, TALKING};
+	public state curState;
 
+	private state nextState;
+	private bool interactedBefore;
 	private GameObject player;
 
 
 	void Start () {
-		isFollowing = false;
 		interactedBefore = false;
-		isTalking = false;
+		curState = state.IDLE;
+		nextState = state.IDLE;
 
 		dm = GameObject.FindGameObjectWithTag ("Dialogue").GetComponent<DialogManager>();
 		player = GameObject.FindGameObjectWithTag ("Player");
 	}
 
 	void FixedUpdate (){
-		if (isTalking) {
+		if (curState == state.TALKING) {
 			Vector3 relativePos = player.transform.position - transform.position;
 			Quaternion rot = Quaternion.LookRotation(relativePos);
 			transform.rotation = Quaternion.Slerp (transform.rotation, rot, Time.time * 0.01f);
 		}
 	}
 
-	public bool getIsFollowing () {
-		return isFollowing;
-	}
-
-	public void ToggleIsFollowing(){
-		isFollowing = !isFollowing;
-	}
-
 	public void Clicked(){
-		if (!isTalking) {
+		if (curState != state.TALKING) {
 			StartCoroutine("Talk");
 		}
 		if (shouldFollow) {
-			ToggleIsFollowing ();
+			nextState = state.FOLLOWING;
+		} else {
+			nextState = state.IDLE;
 		}
 	}
 
 	IEnumerator Talk(){
-		isTalking = true;
+		curState = state.TALKING;
 		dm.ToggleActive ();
 		if (!interactedBefore) {
 			interactedBefore = true;
@@ -82,6 +77,6 @@ public class PlayerInteraction : MonoBehaviour {
 			dm.UpdateDialog ("");
 		}
 		dm.ToggleActive ();
-		isTalking = false;
+		curState = nextState;
 	}
 }

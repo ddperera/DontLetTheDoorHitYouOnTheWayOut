@@ -11,14 +11,14 @@ public class NPCMovement : MonoBehaviour {
 	public float maxDistToPlayer = 10f;
 	public float chaseTimeout;
 
-	private PlayerInteraction playerInteraction;
+	private PlayerInteraction pi;
 	private NavMeshAgent nav;
 	private GameObject player;
 	private float endChaseTimer;
 	private float patrolTimer;
 
 	void Awake() {
-		playerInteraction = GetComponent<PlayerInteraction> ();
+		pi = GetComponent<PlayerInteraction> ();
 		nav = GetComponent<NavMeshAgent> ();
 		player = GameObject.FindGameObjectWithTag ("Player");
 	}
@@ -26,7 +26,7 @@ public class NPCMovement : MonoBehaviour {
 	void Update() {
 		float distToPlayer = Vector3.Distance (player.transform.position, transform.position);
 
-		if (playerInteraction.getIsFollowing () && distToPlayer > minDistToPlayer && distToPlayer < maxDistToPlayer) {
+		if (pi.curState == PlayerInteraction.state.FOLLOWING && distToPlayer > minDistToPlayer && distToPlayer < maxDistToPlayer) {
 			follow ();
 		} else {
 			idle ();
