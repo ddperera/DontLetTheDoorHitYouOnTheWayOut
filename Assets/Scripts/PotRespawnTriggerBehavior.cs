@@ -1,14 +1,22 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class PotRespawnTriggerBehavior : MonoBehaviour {
 	
-	public static int numPots = 4;
+	public List<GameObject> respawnPots = new List<GameObject>(){};
+	private List<Vector3> respawnLocations = new List<Vector3>(){};
+	private List<Quaternion> respawnRotations = new List<Quaternion>(){};
 	public GameObject pot;
+	public static int numPots;
 
 	// Use this for initialization
 	void Start () {
-	
+		foreach (GameObject pot in respawnPots) {
+			respawnLocations.Add(pot.transform.position);
+			respawnRotations.Add(pot.transform.rotation);
+		}
+		numPots = respawnPots.Count;
 	}
 	
 	// Update is called once per frame
@@ -18,11 +26,10 @@ public class PotRespawnTriggerBehavior : MonoBehaviour {
 	
 	void OnTriggerEnter(Collider other) {
 		if (numPots == 0) {
-			numPots = 4;
-			Instantiate(pot, new Vector3(-5.813f, 0.462f, 2.729f), Quaternion.identity);
-			Instantiate(pot, new Vector3(-7.54f, 0.462f, 3.2f), Quaternion.identity);
-			Instantiate(pot, new Vector3(-8.62f, 0.462f, 4.33f), Quaternion.identity);
-			Instantiate(pot, new Vector3(-8.81f, 0.462f, 5.69f), Quaternion.identity);
+			numPots = respawnPots.Count;
+			for (int i = 0; i < respawnPots.Count; i++) {
+				Instantiate(pot, respawnLocations[i], respawnRotations[i]);
+			}
 		}
 	}
 }
