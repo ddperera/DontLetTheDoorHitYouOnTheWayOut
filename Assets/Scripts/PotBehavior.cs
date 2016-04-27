@@ -7,7 +7,6 @@ public class PotBehavior : MonoBehaviour {
 	ParticleSystem myParticles;
 	TextMesh myLootCount;
 	bool waitingForDestruction = false;
-
 	int myLootAmount = 1;
 
 	// Use this for initialization
@@ -35,6 +34,7 @@ public class PotBehavior : MonoBehaviour {
 		if (!waitingForDestruction) {
 			waitingForDestruction = true;
 			thePlayer.GetComponent<Inventory> ().AddMoney (myLootAmount);
+			PotRespawnTriggerBehavior.numPots -= 1;
 			StartCoroutine (DestroyCountdown (0.9f));
 		}
 	}
@@ -42,6 +42,7 @@ public class PotBehavior : MonoBehaviour {
 	IEnumerator DestroyCountdown(float delay){
 		yield return new WaitForSeconds (delay);
 		Destroy (this.gameObject);
+		
 		yield return null;
 	}
 
