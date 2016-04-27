@@ -61,7 +61,6 @@ public class Inventory : MonoBehaviour {
 		float TIMER = 2.5f; // duration of effect and seconds until auto-destroy coroutine (in case of infinite loops)
 		float START_TIME = Time.time;
 		while (int.Parse(moneyAmountUI.text.Substring(1)) != myMoney || Time.time - START_TIME <= TIMER) {
-			Debug.Log (moneyAmountUI.text.Substring(1));
 			int intermediateAmount = int.Parse(moneyAmountUI.text.Substring(1));
 			float lerpFraction = (Time.time - START_TIME) / TIMER;
 			intermediateAmount = Mathf.RoundToInt(Mathf.Lerp(int.Parse(moneyAmountUI.text.Substring(1)), myMoney, lerpFraction));

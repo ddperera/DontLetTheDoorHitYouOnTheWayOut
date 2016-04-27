@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityStandardAssets.ImageEffects;
+using UnityEngine.UI;
 
 public class Movement : MonoBehaviour {
 
@@ -15,6 +16,7 @@ public class Movement : MonoBehaviour {
 	private MotionBlur motionBlur;
 	private float targetHeight;
 	private RaycastHit hitInfo;
+	private int CHECK_RATE = 25;
 	private Ray toFloor;
 	private Ray testShot;
 	private float cameraRotY = 0f;
@@ -23,6 +25,10 @@ public class Movement : MonoBehaviour {
 	private Vector3 temp;
 	private Quaternion tempQ;
 	private Rigidbody rb;
+
+	// UI Feedback
+	public GameObject playerUI;
+	private Image playerReticle;
 
 
 	// Use this for initialization
@@ -42,11 +48,23 @@ public class Movement : MonoBehaviour {
 		testShot = new Ray (new Vector3 (-1, 1, -3), Vector3.right);
 
 		curState = state.WALKING;
+
+		playerReticle = playerUI.transform.FindChild("Reticle").GetComponent<Image>();
 	}
 	
 	// Update is called once per frame
 	void Update () 
 	{
+		// Indicates if the object within the player's purview is interactable by changing the reticle.
+		if (Time.frameCount % CHECK_RATE == 0) {
+			RaycastHit hitCheckerInfo = new RaycastHit ();
+			playerReticle.color = Color.grey;
+			if (Physics.Raycast (camera.ViewportPointToRay (new Vector3 (.5f, .5f, 0f)), out hitCheckerInfo, 2.5f)) {
+				if (hitCheckerInfo.collider.gameObject.CompareTag ("Interactable")) {
+					playerReticle.color = Color.white;
+				}
+			}
+		}
 		// Mouse click interaction handling
 		// If the object that is clicked has an "Interactable" tag, call the "OnPlayerClicked" function
 		// on its attached script.
@@ -61,6 +79,7 @@ public class Movement : MonoBehaviour {
 				}
 			}
 		}
+
 
 		camera.transform.localRotation = Quaternion.Euler (camera.transform.localRotation.eulerAngles.x, 0, 0);
 		if (curState == state.WALKING) 
