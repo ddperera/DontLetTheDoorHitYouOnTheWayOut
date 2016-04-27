@@ -4,7 +4,7 @@ using System.Collections;
 public class ExitDoorLevelTwoBehavior : MonoBehaviour {
 
 	GameObject thePlayer;
-	string requiredObjectName = "Level2_DoorHandle_1";
+	string requiredObjectName = GameVars.LEVEL_TWO_DOOR_HANDLE_NAME;
 	bool openable = false;
 
 	// Use this for initialization

@@ -17,6 +17,7 @@ public class Movement : MonoBehaviour {
 	private float targetHeight;
 	private RaycastHit hitInfo;
 	private int CHECK_RATE = 25;
+	private float proximityDistance =  2.5f;
 	private Ray toFloor;
 	private Ray testShot;
 	private float cameraRotY = 0f;
@@ -59,7 +60,7 @@ public class Movement : MonoBehaviour {
 		if (Time.frameCount % CHECK_RATE == 0) {
 			RaycastHit hitCheckerInfo = new RaycastHit ();
 			playerReticle.color = Color.grey;
-			if (Physics.Raycast (camera.ViewportPointToRay (new Vector3 (.5f, .5f, 0f)), out hitCheckerInfo, 2.5f)) {
+			if (Physics.Raycast (camera.ViewportPointToRay (new Vector3 (.5f, .5f, 0f)), out hitCheckerInfo, proximityDistance)) {
 				if (hitCheckerInfo.collider.gameObject.CompareTag ("Interactable")) {
 					playerReticle.color = Color.white;
 				}
@@ -71,7 +72,7 @@ public class Movement : MonoBehaviour {
 		if (Input.GetButtonDown("Fire1") && curState == state.WALKING)
 		{
 			RaycastHit hitInfo = new RaycastHit();
-			if (Physics.Raycast(camera.ViewportPointToRay(new Vector3(.5f,.5f,0f)), out hitInfo, 2.5f))
+			if (Physics.Raycast(camera.ViewportPointToRay(new Vector3(.5f,.5f,0f)), out hitInfo, proximityDistance))
 			{
 				if (hitInfo.collider.gameObject.CompareTag("Interactable"))
 				{
