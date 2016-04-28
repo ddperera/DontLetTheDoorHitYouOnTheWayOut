@@ -2,29 +2,33 @@
 using System.Collections;
 
 public class PlayerInteraction : MonoBehaviour {
-
-	public DialogManager dm;
-	public bool shouldFollow;
-
+	
 	//Dialogs
-	public string[] greeting;
-	public string[] dialog;
+	public bool shouldTalk = true;
+	public int curDialog;
+	public MultiDimensionalString[] dialogs;
+	public DialogManager dm;
 
-	public float maxDistFromPlayer = 3;
+	public AudioClip[] voices;
+	private AudioSource audio;
 
+	//state related
 	public enum state {FOLLOWING, IDLE, TALKING};
 	public state curState;
-
+	public bool shouldFollow;
 	private state nextState;
-	private bool interactedBefore;
+
+	//player related
+	public float maxDistFromPlayer = 3;
 	private GameObject player;
 
 
-	void Start () {
-		interactedBefore = false;
+	void Awake () {
 		curState = state.IDLE;
 		nextState = state.IDLE;
+		curDialog = 0;
 
+		audio = GetComponent<AudioSource> ();
 		dm = GameObject.FindGameObjectWithTag ("Dialogue").GetComponent<DialogManager>();
 		player = GameObject.FindGameObjectWithTag ("Player");
 	}
@@ -38,7 +42,7 @@ public class PlayerInteraction : MonoBehaviour {
 	}
 
 	public void Clicked(){
-		if (curState != state.TALKING) {
+		if (curState != state.TALKING && dialogs.Length > curDialog) {
 			StartCoroutine("Talk");
 		}
 		if (shouldFollow) {
@@ -51,32 +55,36 @@ public class PlayerInteraction : MonoBehaviour {
 	IEnumerator Talk(){
 		curState = state.TALKING;
 		dm.ToggleActive ();
-		if (!interactedBefore) {
-			interactedBefore = true;
+		int i = 0;
+		foreach(string text in dialogs[curDialog].stringArray){
+			dm.UpdateDialog (text);
+			if (!audio.isPlaying && shouldTalk) {
+				audio.clip = voices[i % voices.Length];
+				audio.Play ();
+				i++;
+			}
+			do {
+				yield return null;
+			} while (!Input.GetButtonDown ("Fire1"));
+			if (audio.isPlaying) {
+				audio.Stop ();
+			}
 
-			foreach(string text in greeting){
-				dm.UpdateDialog (text);
-				do {
-					yield return null;
-				} while (!Input.GetButtonDown ("Fire1"));
-				if (Vector3.Distance (player.transform.position, transform.position) > maxDistFromPlayer) {
-					break;
-				}
+			if (Vector3.Distance (player.transform.position, transform.position) > maxDistFromPlayer) {
+				break;
 			}
-			dm.UpdateDialog ("");
-		} else {
-			foreach(string text in dialog){
-				dm.UpdateDialog (text);
-				do {
-					yield return null;
-				} while (!Input.GetButtonDown ("Fire1"));
-				if (Vector3.Distance (player.transform.position, transform.position) > maxDistFromPlayer) {
-					break;
-				}
-			}
-			dm.UpdateDialog ("");
 		}
+		if (curDialog == 0 && dialogs.Length > 1) {
+			curDialog = 1;
+		}
+		dm.UpdateDialog ("");
 		dm.ToggleActive ();
 		curState = nextState;
 	}
+}
+
+[System.Serializable]
+public class MultiDimensionalString
+{
+	public string[] stringArray;
 }
