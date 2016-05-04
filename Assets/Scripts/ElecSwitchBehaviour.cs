@@ -16,6 +16,9 @@ public class ElecSwitchBehaviour : MonoBehaviour {
 	void Start () {
 		player = GameObject.FindGameObjectWithTag ("Player");
 		playerInfo = player.GetComponent<Movement> ();
+		if (electricityEffects.isPlaying) {
+			electricityEffects.Stop ();
+		}
 	}
 	
 	// Update is called once per frame

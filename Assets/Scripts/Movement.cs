@@ -30,7 +30,7 @@ public class Movement : MonoBehaviour {
 	// UI Feedback
 	public GameObject playerUI;
 	private Image playerReticle;
-
+	private GameObject NPC;
 
 	// Use this for initialization
 	void Start () 
@@ -45,6 +45,7 @@ public class Movement : MonoBehaviour {
 		Physics.Raycast (toFloor, out hitInfo);
 		targetHeight = hitInfo.distance;
 		isGhost = false;
+		NPC = GameObject.FindGameObjectWithTag ("NPC");
 
 		testShot = new Ray (new Vector3 (-1, 1, -3), Vector3.right);
 
@@ -156,10 +157,16 @@ public class Movement : MonoBehaviour {
 		if (isGhost) {
 			colorCorrection.enabled = true;
 			motionBlur.enabled = true;
+			NPC.GetComponentInChildren<Rigidbody> ().isKinematic = true;
+			//NPC.GetComponentInChildren<Rigidbody> ().constraints = RigidbodyConstraints.FreezePositionY;
+			NPC.GetComponentInChildren<SphereCollider> ().enabled = false;
 		}
 		if (!isGhost) {
 			colorCorrection.enabled = false;
 			motionBlur.enabled = false;
+			NPC.GetComponentInChildren<SphereCollider> ().enabled = true;
+			//NPC.GetComponentInChildren<Rigidbody> ().constraints = RigidbodyConstraints.None;
+			NPC.GetComponentInChildren<Rigidbody> ().isKinematic = false;
 		}
 
 	}
