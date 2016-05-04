@@ -25,12 +25,13 @@ public class DoorBehavior : MonoBehaviour {
 			if (!needsKey || (needsKey && thePlayer.GetComponent<Inventory> ().OwnsObject (myKey))) {
 				thePlayer.GetComponent<Inventory> ().RemoveObject (myKey);
 				locked = false;
+				thePlayer.GetComponent<AudioSource> ().PlayOneShot (gameObject.GetComponent<AudioSource>().clip);
 				// Lock visual effect (move lock part up)
 				myLock.transform.position += unlockMoveOffset;
 				this.gameObject.tag = "Interactable";
 			}
 		} else {
-			//TODO play some opening sound
+			
 			this.gameObject.GetComponent<Animator>().SetTrigger("openDoor");
 			//this.gameObject.SetActive (false);
 		}

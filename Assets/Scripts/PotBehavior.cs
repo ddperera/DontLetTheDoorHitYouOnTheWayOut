@@ -29,11 +29,12 @@ public class PotBehavior : MonoBehaviour {
 			// Set loot count to face the player
 			myLootCount.gameObject.transform.LookAt(thePlayer.transform.position);
 			myLootCount.gameObject.transform.Rotate (Vector3.up, 180);
+			myLootCount.transform.position += Vector3.up * 0.01f;
 		}
 	}
 
 	public void OnPlayerClicked(){
-		//TODO play smashing sound
+		thePlayer.GetComponent<AudioSource> ().PlayOneShot (gameObject.GetComponent<AudioSource>().clip);
 		myParticles.enableEmission = true;
 		myParticles.Play();
 		myLootCount.gameObject.SetActive(true);

@@ -24,6 +24,7 @@ public class LootPickupBehavior : MonoBehaviour {
 		Debug.Log (coll);
 		if (coll.gameObject.tag == "Player") {
 			Debug.Log ("superLol");
+			thePlayer.GetComponent<AudioSource> ().PlayOneShot (gameObject.GetComponent<AudioSource>().clip);
 			thePlayer.GetComponent<Inventory>().AddMoney(myLootAmount);
 			Destroy (this.gameObject);
 		}
