@@ -8,6 +8,7 @@ public class Movement : MonoBehaviour {
 	public float moveSpeed;
 	public float sensitivity;
 	public bool isGhost;
+	public bool Level1 = false;
 
 	private Camera camera;
 	public CharacterController controller;
@@ -157,16 +158,20 @@ public class Movement : MonoBehaviour {
 		if (isGhost) {
 			colorCorrection.enabled = true;
 			motionBlur.enabled = true;
-			NPC.GetComponentInChildren<Rigidbody> ().isKinematic = true;
-			//NPC.GetComponentInChildren<Rigidbody> ().constraints = RigidbodyConstraints.FreezePositionY;
-			NPC.GetComponentInChildren<SphereCollider> ().enabled = false;
+			if (Level1) {
+				NPC.GetComponentInChildren<Rigidbody> ().isKinematic = true;
+				//NPC.GetComponentInChildren<Rigidbody> ().constraints = RigidbodyConstraints.FreezePositionY;
+				NPC.GetComponentInChildren<SphereCollider> ().enabled = false;
+			}
 		}
 		if (!isGhost) {
 			colorCorrection.enabled = false;
 			motionBlur.enabled = false;
-			NPC.GetComponentInChildren<SphereCollider> ().enabled = true;
-			//NPC.GetComponentInChildren<Rigidbody> ().constraints = RigidbodyConstraints.None;
-			NPC.GetComponentInChildren<Rigidbody> ().isKinematic = false;
+			if (Level1) {
+				NPC.GetComponentInChildren<SphereCollider> ().enabled = true;
+				//NPC.GetComponentInChildren<Rigidbody> ().constraints = RigidbodyConstraints.None;
+				NPC.GetComponentInChildren<Rigidbody> ().isKinematic = false;
+			}
 		}
 
 	}
