@@ -4,6 +4,7 @@ using System.Collections;
 public class LookAway : MonoBehaviour {
 
 	public Transform lookTarget;
+	public float rotSpeed = 1f;
 
 	private PlayerInteraction pi;
 
@@ -15,7 +16,7 @@ public class LookAway : MonoBehaviour {
 		if (pi.curState == PlayerInteraction.state.IDLE) {
 			Vector3 relativePos = lookTarget.transform.position - transform.position;
 			Quaternion rot = Quaternion.LookRotation(relativePos);
-			transform.rotation = Quaternion.Slerp (transform.rotation, rot, Time.time * 0.01f);
+			transform.rotation = Quaternion.Slerp (transform.rotation, rot, Time.time * 0.001f * rotSpeed);
 		}
 	}
 }

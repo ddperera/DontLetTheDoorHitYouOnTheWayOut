@@ -2,7 +2,14 @@
 using System.Collections;
 
 public class PlayerInteraction : MonoBehaviour {
-	
+
+	//state related
+	public enum state {FOLLOWING, IDLE, TALKING};
+	public state curState;
+	public bool shouldFollow;
+	public float rotSpeed = 1f;
+	private state nextState;
+
 	//Dialogs
 	public bool shouldTalk = true;
 	public int curDialog;
@@ -11,12 +18,6 @@ public class PlayerInteraction : MonoBehaviour {
 
 	public AudioClip[] voices;
 	private AudioSource audio;
-
-	//state related
-	public enum state {FOLLOWING, IDLE, TALKING};
-	public state curState;
-	public bool shouldFollow;
-	private state nextState;
 
 	//player related
 	public float maxDistFromPlayer = 3;
@@ -37,7 +38,7 @@ public class PlayerInteraction : MonoBehaviour {
 		if (curState == state.TALKING) {
 			Vector3 relativePos = player.transform.position - transform.position;
 			Quaternion rot = Quaternion.LookRotation(relativePos);
-			transform.rotation = Quaternion.Slerp (transform.rotation, rot, Time.time * 0.01f);
+			transform.rotation = Quaternion.Slerp (transform.rotation, rot, Time.time * 0.001f * rotSpeed);
 		}
 	}
 
@@ -47,8 +48,6 @@ public class PlayerInteraction : MonoBehaviour {
 		}
 		if (shouldFollow) {
 			nextState = state.FOLLOWING;
-		} else {
-			nextState = state.IDLE;
 		}
 	}
 
@@ -65,7 +64,8 @@ public class PlayerInteraction : MonoBehaviour {
 			}
 			do {
 				yield return null;
-			} while (!Input.GetButtonDown ("Fire1"));
+
+			} while (!Input.GetButtonDown ("Fire1") && Vector3.Distance (player.transform.position, transform.position) <= maxDistFromPlayer);
 			if (audio.isPlaying) {
 				audio.Stop ();
 			}
@@ -82,9 +82,9 @@ public class PlayerInteraction : MonoBehaviour {
 		curState = nextState;
 	}
 }
-
+/**
 [System.Serializable]
 public class MultiDimensionalString
 {
 	public string[] stringArray;
-}
+}*/
