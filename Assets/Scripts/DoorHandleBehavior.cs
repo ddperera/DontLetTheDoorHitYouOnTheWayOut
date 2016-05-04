@@ -4,7 +4,7 @@ using System.Collections;
 public class DoorHandleBehavior : MonoBehaviour {
 
 	GameObject thePlayer;
-	string myName = "Level2_DoorHandle_1";
+	string myName = GameConstants.LEVEL_TWO_DOOR_HANDLE_NAME;
 
 	// Use this for initialization
 	void Start () {

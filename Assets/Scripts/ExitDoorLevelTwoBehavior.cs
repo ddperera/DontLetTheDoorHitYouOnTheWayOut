@@ -4,8 +4,9 @@ using System.Collections;
 public class ExitDoorLevelTwoBehavior : MonoBehaviour {
 
 	GameObject thePlayer;
-	string requiredObjectName = GameVars.LEVEL_TWO_DOOR_HANDLE_NAME;
+	string requiredObjectName = GameConstants.LEVEL_TWO_DOOR_HANDLE_NAME;
 	bool openable = false;
+	public GameObject theMissingHandle;
 
 	// Use this for initialization
 	void Start () {
@@ -24,12 +25,21 @@ public class ExitDoorLevelTwoBehavior : MonoBehaviour {
 			thePlayer.GetComponent<Inventory> ().RemoveObject (requiredObjectName);
 			openable = true;
 			// Effects of change
-			GameObject newShape = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
-			gameObject.transform.FindChild("Pull Area").GetComponent<MeshFilter>().mesh = newShape.GetComponent<MeshFilter>().mesh;
-			Destroy (newShape);
+			theMissingHandle.SetActive (true);
+			Vector3 initialPosition = theMissingHandle.transform.localPosition;
+			Quaternion initialRotation = theMissingHandle.transform.localRotation;
+			Vector3 initialScale = theMissingHandle.transform.localScale;
+			//GameObject newShape = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+			//gameObject.transform.FindChild("Pull Area").GetComponent<MeshFilter>().mesh = newShape.GetComponent<MeshFilter>().mesh;
+			/*theMissingHandle.transform.SetParent(gameObject.transform.FindChild("Pull Area"));
+			theMissingHandle.transform.position = initialPosition;
+			theMissingHandle.transform.rotation = initialRotation;
+			theMissingHandle.transform.localScale = initialScale;*/
+				
+			//Destroy (newShape);
 		}
 		else if (openable) {
-			gameObject.SetActive (false);
+			this.gameObject.GetComponent<Animator>().SetTrigger("openDoor");
 		}
 	}
 }

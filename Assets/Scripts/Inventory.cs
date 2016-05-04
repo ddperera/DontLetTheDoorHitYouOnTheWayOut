@@ -9,6 +9,7 @@ public class Inventory : MonoBehaviour {
 	Dictionary<string,GameObject> myItems = new Dictionary<string,GameObject>();
 	int myMoney = 0;
 	public Text moneyAmountUI;
+	public Text moneyFeedbackUI;
 
 
 	// Use this for initialization
@@ -49,11 +50,13 @@ public class Inventory : MonoBehaviour {
 
 	public void AddMoney(int amount){
 		myMoney += amount;
+		moneyFeedbackUI.text += "+$" + amount.ToString ();
 		StartCoroutine(updateMoneyUI());
 	}
 
 	public void SubtractMoney(int amount){
 		myMoney -= amount;
+		moneyFeedbackUI.text += "-$" + amount.ToString ();
 		StartCoroutine(updateMoneyUI());
 	}
 
@@ -70,14 +73,15 @@ public class Inventory : MonoBehaviour {
 	IEnumerator updateMoneyUI(){
 		float TIMER = 2.5f; // duration of effect and seconds until auto-destroy coroutine (in case of infinite loops)
 		float START_TIME = Time.time;
-		while (int.Parse(moneyAmountUI.text.Substring(1)) != myMoney || Time.time - START_TIME <= TIMER) {
-			int intermediateAmount = int.Parse(moneyAmountUI.text.Substring(1));
+		while (int.Parse(moneyAmountUI.text) != myMoney || Time.time - START_TIME <= TIMER) {
+			int intermediateAmount = int.Parse(moneyAmountUI.text);
 			float lerpFraction = (Time.time - START_TIME) / TIMER;
-			intermediateAmount = Mathf.RoundToInt(Mathf.Lerp(int.Parse(moneyAmountUI.text.Substring(1)), myMoney, lerpFraction));
-			moneyAmountUI.text = "$" + intermediateAmount.ToString();
+			intermediateAmount = Mathf.RoundToInt(Mathf.Lerp(int.Parse(moneyAmountUI.text), myMoney, lerpFraction));
+			moneyAmountUI.text = intermediateAmount.ToString();
 			yield return null;
 		}
-		moneyAmountUI.text = "$" + myMoney.ToString();
+		moneyAmountUI.text = myMoney.ToString();
+		moneyFeedbackUI.text = "";
 		yield return null;
 	}
 }

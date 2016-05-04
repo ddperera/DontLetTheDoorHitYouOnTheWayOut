@@ -31,7 +31,8 @@ public class DoorBehavior : MonoBehaviour {
 			}
 		} else {
 			//TODO play some opening sound
-			this.gameObject.SetActive (false);
+			this.gameObject.GetComponent<Animator>().SetTrigger("openDoor");
+			//this.gameObject.SetActive (false);
 		}
 
 	}
