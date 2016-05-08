@@ -34,13 +34,15 @@ public class PotBehavior : MonoBehaviour {
 	}
 
 	public void OnPlayerClicked(){
-		thePlayer.GetComponent<AudioSource> ().PlayOneShot (gameObject.GetComponent<AudioSource>().clip);
-		myParticles.enableEmission = true;
-		myParticles.Play();
-		myLootCount.gameObject.SetActive(true);
-		myLootCount.text = "+$" + breakPotAmount.ToString();
+		
 		if (!waitingForDestruction) {
 			waitingForDestruction = true;
+			thePlayer.GetComponent<AudioSource> ().PlayOneShot (gameObject.GetComponent<AudioSource>().clip);
+			myParticles.enableEmission = true;
+			myParticles.Play();
+			myLootCount.gameObject.SetActive(true);
+			myLootCount.text = "+$" + breakPotAmount.ToString();
+			this.gameObject.GetComponent<Animator>().SetTrigger("isBroken");
 			thePlayer.GetComponent<Inventory> ().AddMoney (breakPotAmount);
 			PotRespawnTriggerBehavior.numPots -= 1;
 			GenerateLootPickups();
