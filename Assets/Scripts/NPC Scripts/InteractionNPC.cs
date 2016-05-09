@@ -52,7 +52,7 @@ public class InteractionNPC : MonoBehaviour {
 			Vector3 relativePos = defaultLookTarget.position - transform.position;
 			Quaternion rot = Quaternion.LookRotation (relativePos);
 			transform.rotation = Quaternion.Slerp (transform.rotation, rot, Time.time * 0.001f * rotationSpeed);
-		}
+		} 
 	}
 
 	public void OnPlayerClicked(){

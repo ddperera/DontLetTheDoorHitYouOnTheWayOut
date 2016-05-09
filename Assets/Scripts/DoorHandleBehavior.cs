@@ -6,18 +6,13 @@ public class DoorHandleBehavior : MonoBehaviour {
 	public int dialogAfterTheft;
 	public GameObject NPC;
 
-	GameObject thePlayer;
+	private GameObject thePlayer;
 	string myName = GameConstants.LEVEL_TWO_DOOR_HANDLE_NAME;
 
 
 	// Use this for initialization
 	void Start () {
 		thePlayer = GameObject.FindGameObjectWithTag("Player");
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
 	}
 
 	public void OnPlayerClicked(){
