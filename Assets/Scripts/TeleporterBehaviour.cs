@@ -4,6 +4,8 @@ using System.Collections;
 public class TeleporterBehaviour : MonoBehaviour {
 
 	public Transform destination;
+	public Transform NPC;
+
 	private bool solvedPuzzle = false;
 	private GameObject player;
 	private Transform NPCTarget;
@@ -13,8 +15,8 @@ public class TeleporterBehaviour : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		player = GameObject.FindGameObjectWithTag ("Player");
-		NPCTarget = GameObject.FindGameObjectWithTag ("NPC").transform.GetChild(0);
-		NPCBody = GameObject.FindGameObjectWithTag ("NPC").transform.GetChild(1);
+		NPCTarget = NPC.GetChild(0);
+		NPCBody = NPC.GetChild(1);
 		playerInfo = player.GetComponent<Movement> ();
 	}
 	

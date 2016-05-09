@@ -17,8 +17,13 @@ public class GameManager : MonoBehaviour {
 			DontDestroyOnLoad (gameObject);
 			gm = this;
 
+
 		} else if (gm != this){
 			Destroy (gameObject);
 		}
+	}
+
+	void Start(){
+		firstTimePlaying = false;
 	}
 }

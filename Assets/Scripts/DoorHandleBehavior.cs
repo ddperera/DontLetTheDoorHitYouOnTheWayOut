@@ -4,7 +4,7 @@ using System.Collections;
 public class DoorHandleBehavior : MonoBehaviour {
 
 	public int dialogAfterTheft;
-	private GameObject NPC;
+	public GameObject NPC;
 
 	GameObject thePlayer;
 	string myName = GameConstants.LEVEL_TWO_DOOR_HANDLE_NAME;

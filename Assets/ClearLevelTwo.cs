@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ClearLevelOne : MonoBehaviour {
+public class ClearLevelTwo : MonoBehaviour {
 
 	void OnTriggerEnter(Collider coll) {
 		if (coll.gameObject.CompareTag ("Player")) {
-			GameManager.gm.level1Cleared = true;
+			GameManager.gm.level2Cleared = true;
 		}
 	}
 }

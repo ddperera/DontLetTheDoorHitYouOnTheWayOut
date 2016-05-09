@@ -2,6 +2,8 @@
 using System.Collections;
 using UnityStandardAssets.ImageEffects;
 using UnityEngine.UI;
+using System;
+using System.Collections.Generic;
 
 public class Movement : MonoBehaviour {
 
@@ -32,7 +34,8 @@ public class Movement : MonoBehaviour {
 	// UI Feedback
 	public GameObject playerUI;
 	private Image playerReticle;
-	private GameObject NPC;
+	//private GameObject NPC;
+	private GameObject[] NPCs;
 
 	// Use this for initialization
 	void Start () 
@@ -47,7 +50,8 @@ public class Movement : MonoBehaviour {
 		Physics.Raycast (toFloor, out hitInfo);
 		targetHeight = hitInfo.distance;
 		isGhost = false;
-		NPC = GameObject.FindGameObjectWithTag ("NPC");
+		//NPC = GameObject.FindGameObjectWithTag ("NPC");
+		NPCs = GameObject.FindGameObjectsWithTag ("NPC");
 
 		testShot = new Ray (new Vector3 (-1, 1, -3), Vector3.right);
 
@@ -169,18 +173,30 @@ public class Movement : MonoBehaviour {
 			colorCorrection.enabled = true;
 			motionBlur.enabled = true;
 			if (Level1) {
-				NPC.GetComponentInChildren<Rigidbody> ().isKinematic = true;
-				//NPC.GetComponentInChildren<Rigidbody> ().constraints = RigidbodyConstraints.FreezePositionY;
-				NPC.GetComponentInChildren<SphereCollider> ().enabled = false;
+				for (int i = 0; i < NPCs.Length; i++) {
+					NPCs[i].GetComponentInChildren<Rigidbody> ().isKinematic = true;
+					NPCs[i].GetComponentInChildren<SphereCollider> ().enabled = false;
+				}
+
+
+				//NPC.GetComponentInChildren<Rigidbody> ().isKinematic = true;
+				//NPC.GetComponentInChildren<SphereCollider> ().enabled = false;
 			}
 		}
 		if (!isGhost) {
 			colorCorrection.enabled = false;
 			motionBlur.enabled = false;
 			if (Level1) {
-				NPC.GetComponentInChildren<SphereCollider> ().enabled = true;
-				//NPC.GetComponentInChildren<Rigidbody> ().constraints = RigidbodyConstraints.None;
-				NPC.GetComponentInChildren<Rigidbody> ().isKinematic = false;
+				for (int i = 0; i < NPCs.Length; i++) {
+					NPCs[i].GetComponentInChildren<SphereCollider> ().enabled = true;
+					NPCs[i].GetComponentInChildren<Rigidbody> ().isKinematic = false;
+				}
+
+
+
+
+				//NPC.GetComponentInChildren<SphereCollider> ().enabled = true;
+				//NPC.GetComponentInChildren<Rigidbody> ().isKinematic = false;
 			}
 		}
 
