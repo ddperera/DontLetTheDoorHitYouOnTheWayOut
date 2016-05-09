@@ -16,7 +16,8 @@ public class TargetMovementNPC : MonoBehaviour {
 	private GameObject player;
 
 	void Awake() {
-		pi = GameObject.FindGameObjectWithTag ("NPC").GetComponentInChildren<InteractionNPC> ();
+		pi = transform.parent.GetComponentInChildren<InteractionNPC> ();
+		//pi = GameObject.FindGameObjectWithTag ("NPC").GetComponentInChildren<InteractionNPC> ();
 		nav = GetComponent<NavMeshAgent> ();
 		player = GameObject.FindGameObjectWithTag ("Player");
 	}

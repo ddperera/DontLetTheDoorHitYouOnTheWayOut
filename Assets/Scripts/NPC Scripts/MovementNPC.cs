@@ -11,7 +11,8 @@ public class MovementNPC : MonoBehaviour {
 
 	void Start(){
 		rb = GetComponent<Rigidbody> ();
-		target = GameObject.FindGameObjectWithTag ("NPCTarget").transform;
+		target = transform.parent.GetChild (0);
+		//target = GameObject.FindGameObjectWithTag ("NPCTarget").transform;
 	}
 
 	void FixedUpdate(){

@@ -9,11 +9,14 @@ public class GameManager : MonoBehaviour {
 
 	public bool level1Cleared;
 	public bool level2Cleared;
+	public bool firstTimePlaying;
+
 
 	void Awake () {
 		if (gm == null) {
 			DontDestroyOnLoad (gameObject);
 			gm = this;
+
 		} else if (gm != this){
 			Destroy (gameObject);
 		}

@@ -33,12 +33,22 @@ public class TeleporterBehaviour : MonoBehaviour {
 			if (!solvedPuzzle) {
 				NPCTarget.GetComponent<TargetMovementNPC> ().enabled = false;
 				NPCTarget.GetComponent<NavMeshAgent> ().enabled = false;
-				NPCTarget.position = NPCTarget.transform.position + (destination.position - player.transform.position);
-				NPCBody.position = NPCTarget.position + Vector3.up * 2f;
+
+
+				NPCTarget.position += destination.position - transform.position;
+				NPCBody.position += destination.position - transform.position;
+
+				//NPCTarget.position = NPCTarget.transform.position + (destination.position - player.transform.position);
+				//NPCBody.position = NPCTarget.position + Vector3.up * 2f;
 				//NPC.transform.position = NPC.transform.position + (destination.position - player.transform.position);
+
+
 				NPCTarget.GetComponent<NavMeshAgent> ().enabled = true;
 				NPCTarget.GetComponent<TargetMovementNPC> ().enabled = true;
-				player.transform.position = player.transform.position + Vector3.forward * 100f;
+
+
+				player.transform.position += destination.position - transform.position;
+				//player.transform.position = player.transform.position + Vector3.forward * 100f;
 				//player.transform.position = destination.position;
 			}
 		}

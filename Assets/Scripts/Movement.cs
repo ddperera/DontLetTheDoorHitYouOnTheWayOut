@@ -153,6 +153,7 @@ public class Movement : MonoBehaviour {
 		} else if (goalCamRot.x > 80f && goalCamRot.x < 180f) {
 			goalCamRot.x = 80f;
 		}
+
 		camera.transform.localEulerAngles = goalCamRot;
 		
 		if (isGhost) {
