@@ -20,6 +20,7 @@ public class InteractionNPC : MonoBehaviour {
 	public Transform defaultLookTarget;
 
 	public bool NPCProducesSound = true;
+	public float dialogTimer = 1f;
 	public int currentDialog = 0;
 	public MultiDimensionalString[] dialogs;
 	private DialogManager dm;
@@ -67,6 +68,7 @@ public class InteractionNPC : MonoBehaviour {
 		int i = 0;
 		foreach(string text in dialogs[currentDialog].stringArray){
 			dm.UpdateDialog (text);
+			float time = Time.time;
 			if (!audio.isPlaying && NPCProducesSound) {
 				audio.clip = voices[i % voices.Length];
 				audio.Play ();
@@ -74,7 +76,7 @@ public class InteractionNPC : MonoBehaviour {
 			}
 			do {
 				yield return null;
-			} while (!Input.GetButtonDown ("Fire1") && Vector3.Distance (player.transform.position, transform.position) <= maxTalkingDistance);
+			} while ((!Input.GetButtonDown ("Fire1") || (Time.time < (time + dialogTimer))) && Vector3.Distance (player.transform.position, transform.position) <= maxTalkingDistance);
 			if (audio.isPlaying) {
 				audio.Stop ();
 			}
