@@ -27,6 +27,7 @@ public class Movement : MonoBehaviour {
 	private Vector3 temp;
 	private Quaternion tempQ;
 	private Rigidbody rb;
+	private float fallSpeed = 0f;
 
 	// UI Feedback
 	public GameObject playerUI;
@@ -84,9 +85,11 @@ public class Movement : MonoBehaviour {
 		}
 
 
+
 		camera.transform.localRotation = Quaternion.Euler (camera.transform.localRotation.eulerAngles.x, 0, 0);
 		if (curState == state.WALKING) 
 		{
+			fallSpeed = 0f;
 			vel.x = Input.GetAxisRaw ("Horizontal");
 			vel.y = 0;
 			vel.z = Input.GetAxisRaw ("Vertical");
@@ -94,14 +97,18 @@ public class Movement : MonoBehaviour {
 			vel.Normalize ();
 			toFloor.origin = transform.position;
 			toFloor.direction = -1 * transform.up;
+
+			Debug.Log(fallSpeed);
+
 			if (Physics.Raycast (toFloor, out hitInfo)) 
 			{
 				if (!hitInfo.collider.isTrigger) 
 				{
-					if (Mathf.Abs (hitInfo.distance - targetHeight) > .05 && Mathf.Abs (hitInfo.distance - targetHeight) < .15) {
+					if (Mathf.Abs (hitInfo.distance - targetHeight) < 1) 
+					{
 						transform.position = new Vector3 (transform.position.x, hitInfo.point.y + targetHeight, transform.position.z);
 					} 
-					else if(Mathf.Abs (hitInfo.distance - targetHeight) >= .10) 
+					else
 					{
 						curState = state.FALLING;
 					}
@@ -119,10 +126,12 @@ public class Movement : MonoBehaviour {
 		else if (curState == state.FALLING) 
 		{
 			vel.x = Input.GetAxisRaw ("Horizontal");
-			vel.y -= 9.8f*Time.deltaTime;
+			fallSpeed -= 9.8f*Time.deltaTime;
+			vel.y = 0;
 			vel.z = Input.GetAxisRaw ("Vertical");
 			vel = transform.TransformDirection (vel);
 			vel.Normalize ();
+			vel.y = fallSpeed/moveSpeed;
 
 			toFloor.origin = transform.position;
 			toFloor.direction = -1 * transform.up;
