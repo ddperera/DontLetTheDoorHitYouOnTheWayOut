@@ -38,7 +38,8 @@ public class TeleporterBehaviour : MonoBehaviour {
 				//NPC.transform.position = NPC.transform.position + (destination.position - player.transform.position);
 				NPCTarget.GetComponent<NavMeshAgent> ().enabled = true;
 				NPCTarget.GetComponent<TargetMovementNPC> ().enabled = true;
-				player.transform.position = destination.position;
+				player.transform.position = player.transform.position + Vector3.forward * 100f;
+				//player.transform.position = destination.position;
 			}
 		}
 	}
