@@ -11,6 +11,8 @@ public class Movement : MonoBehaviour {
 	public float sensitivity;
 	public bool isGhost;
 	public bool Level1 = false;
+	public AudioClip footstepSound;
+	public AudioSource audioSource;
 
 	private Camera camera;
 	public CharacterController controller;
@@ -46,6 +48,7 @@ public class Movement : MonoBehaviour {
 		camera = GetComponentInChildren<Camera> ();
 		colorCorrection = camera.GetComponent<ColorCorrectionCurves> ();
 		motionBlur = camera.GetComponent<MotionBlur> ();
+		audioSource = GetComponent<AudioSource> ();
 		toFloor = new Ray (transform.position, -1 * transform.up);
 		Physics.Raycast (toFloor, out hitInfo);
 		targetHeight = hitInfo.distance;
@@ -99,6 +102,10 @@ public class Movement : MonoBehaviour {
 			vel.z = Input.GetAxisRaw ("Vertical");
 			vel = transform.TransformDirection (vel);
 			vel.Normalize ();
+			if (!audioSource.isPlaying && (Mathf.Abs(vel.x) > 0 || Mathf.Abs(vel.y) > 0)) {
+				audioSource.PlayOneShot(footstepSound, 0.5f);
+			} 
+			
 			toFloor.origin = transform.position;
 			toFloor.direction = -1 * transform.up;
 
