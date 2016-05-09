@@ -18,12 +18,12 @@ public class LootPickupBehavior : MonoBehaviour {
 		} else {
 			this.gameObject.GetComponent<Rigidbody> ().isKinematic = false;
 		}
+		this.gameObject.transform.RotateAround(this.gameObject.transform.position, Vector3.up, 5);
 	}
 
 	void OnTriggerEnter(Collider coll){
 		Debug.Log (coll);
 		if (coll.gameObject.tag == "Player") {
-			Debug.Log ("superLol");
 			thePlayer.GetComponent<AudioSource> ().PlayOneShot (gameObject.GetComponent<AudioSource>().clip);
 			thePlayer.GetComponent<Inventory>().AddMoney(myLootAmount);
 			Destroy (this.gameObject);

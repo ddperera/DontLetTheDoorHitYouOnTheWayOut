@@ -108,7 +108,7 @@ public class Movement : MonoBehaviour {
 			{
 				if (!hitInfo.collider.isTrigger) 
 				{
-					if (Mathf.Abs (hitInfo.distance - targetHeight) < 1) 
+					if (Mathf.Abs (hitInfo.distance - targetHeight) < .5) 
 					{
 						transform.position = new Vector3 (transform.position.x, hitInfo.point.y + targetHeight, transform.position.z);
 					} 
@@ -120,7 +120,7 @@ public class Movement : MonoBehaviour {
 			} 
 			else 
 			{
-				
+				curState = state.FALLING;
 			}
 		} 
 		else if (curState == state.AUTO) 
