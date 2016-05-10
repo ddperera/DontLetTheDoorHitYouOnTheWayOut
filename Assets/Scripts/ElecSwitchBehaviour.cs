@@ -11,6 +11,7 @@ public class ElecSwitchBehaviour : MonoBehaviour {
 	SwitchState curState = SwitchState.OFF;
 
 	public ParticleSystem electricityEffects;
+	public GameObject electricity;
 
 	// Use this for initialization
 	void Start () {
@@ -19,6 +20,7 @@ public class ElecSwitchBehaviour : MonoBehaviour {
 		if (electricityEffects.isPlaying) {
 			electricityEffects.Stop ();
 		}
+		electricity.active = false;
 	}
 	
 	// Update is called once per frame
@@ -46,11 +48,13 @@ public class ElecSwitchBehaviour : MonoBehaviour {
 			if (!electricityEffects.isPlaying) {
 				electricityEffects.Play ();
 			}
+			electricity.active = true;
 
-			if (!playerInfo.isGhost) {
-				playerInfo.isGhost = true;
-			}
+			// if (!playerInfo.isGhost) {
+			// 	playerInfo.isGhost = true;
+			// }
 		} else {
+			electricity.active = false;
 			if (electricityEffects.isPlaying) {
 				electricityEffects.Stop ();
 			}
