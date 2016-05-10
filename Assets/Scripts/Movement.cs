@@ -13,6 +13,11 @@ public class Movement : MonoBehaviour {
 	public bool Level1 = false;
 	public AudioClip footstepSound;
 	public AudioSource audioSource;
+	public AudioClip deathMusic;
+	public GameObject musicObj;
+	public GameObject reverbZone;
+	private AudioReverbZone reverbZoneSource;
+	private AudioSource musicSource;
 
 	private Camera camera;
 	public CharacterController controller;
@@ -49,6 +54,7 @@ public class Movement : MonoBehaviour {
 		colorCorrection = camera.GetComponent<ColorCorrectionCurves> ();
 		motionBlur = camera.GetComponent<MotionBlur> ();
 		audioSource = GetComponent<AudioSource> ();
+		musicSource = musicObj.GetComponent<AudioSource> ();
 		toFloor = new Ray (transform.position, -1 * transform.up);
 		Physics.Raycast (toFloor, out hitInfo);
 		targetHeight = hitInfo.distance;
@@ -61,6 +67,7 @@ public class Movement : MonoBehaviour {
 		curState = state.WALKING;
 
 		playerReticle = playerUI.transform.FindChild("Reticle").GetComponent<Image>();
+		reverbZoneSource = reverbZone.GetComponent<AudioReverbZone> ();
 	}
 	
 	// Update is called once per frame
@@ -184,6 +191,10 @@ public class Movement : MonoBehaviour {
 			colorCorrection.enabled = true;
 			motionBlur.enabled = true;
 			if (Level1) {
+				reverbZoneSource.enabled = true;
+				musicSource.Pause();
+				musicSource.clip = deathMusic;
+				musicSource.Play();
 				for (int i = 0; i < NPCs.Length; i++) {
 					NPCs[i].GetComponentInChildren<Rigidbody> ().isKinematic = true;
 					NPCs[i].GetComponentInChildren<SphereCollider> ().enabled = false;
@@ -195,6 +206,7 @@ public class Movement : MonoBehaviour {
 			}
 		}
 		if (!isGhost) {
+			reverbZoneSource.enabled = false;
 			colorCorrection.enabled = false;
 			motionBlur.enabled = false;
 			if (Level1) {
