@@ -69,10 +69,14 @@ public class Movement : MonoBehaviour {
 		// Indicates if the object within the player's purview is interactable by changing the reticle.
 		if (Time.frameCount % CHECK_RATE == 0) {
 			RaycastHit hitCheckerInfo = new RaycastHit ();
-			playerReticle.color = Color.grey;
+			// playerReticle.color = Color.grey;
+			playerReticle.CrossFadeColor(Color.grey, 0.1f, false, false);
 			if (Physics.Raycast (camera.ViewportPointToRay (new Vector3 (.5f, .5f, 0f)), out hitCheckerInfo, proximityDistance)) {
 				if (hitCheckerInfo.collider.gameObject.CompareTag ("Interactable")) {
-					playerReticle.color = Color.white;
+					// playerReticle.color = Color.green;
+					playerReticle.CrossFadeColor(new Color(0.2588f, 0.69f, .20784f), 0.1f, false, false);
+				} else {
+					playerReticle.CrossFadeColor(Color.grey, 0.1f, false, false);
 				}
 			}
 		}
