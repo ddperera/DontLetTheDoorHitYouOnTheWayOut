@@ -9,6 +9,7 @@ public class ElecSwitchBehaviour : MonoBehaviour {
 	Vector3 endPos;
 	Transform currentTrans;
 	private float startTime;
+	public AudioClip buttonPressSound;
 
 	enum SwitchState {ON, OFF};
 
@@ -49,6 +50,7 @@ public class ElecSwitchBehaviour : MonoBehaviour {
 	// Interactable
 	void OnPlayerClicked()
 	{
+		AudioSource.PlayClipAtPoint(buttonPressSound,transform.position);
 		startTime = Time.time;
 		switch (curState) 
 		{
