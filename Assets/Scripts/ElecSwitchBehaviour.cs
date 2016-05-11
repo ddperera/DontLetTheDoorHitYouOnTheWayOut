@@ -9,6 +9,8 @@ public class ElecSwitchBehaviour : MonoBehaviour {
 	Vector3 endPos;
 	Transform currentTrans;
 	private float startTime;
+	public GameObject NPC;
+	public int newNPCDialog;
 	public AudioClip buttonPressSound;
 
 	enum SwitchState {ON, OFF};
@@ -66,6 +68,7 @@ public class ElecSwitchBehaviour : MonoBehaviour {
 		}
 
 		if (curState == SwitchState.ON) {
+			NPC.transform.GetComponentInChildren<InteractionNPC> ().currentDialog = newNPCDialog;
 			if (!electricityEffects.isPlaying) {
 				electricityEffects.Play ();
 			}

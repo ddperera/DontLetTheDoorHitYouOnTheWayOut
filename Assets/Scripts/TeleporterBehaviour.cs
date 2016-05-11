@@ -6,6 +6,8 @@ public class TeleporterBehaviour : MonoBehaviour {
 	public Transform destination;
 	public Transform NPC;
 
+	public GameObject levelGeometry;
+
 	private bool solvedPuzzle = false;
 	private GameObject player;
 	private Transform NPCTarget;
@@ -52,6 +54,8 @@ public class TeleporterBehaviour : MonoBehaviour {
 				player.transform.position += destination.position - transform.position;
 				//player.transform.position = player.transform.position + Vector3.forward * 100f;
 				//player.transform.position = destination.position;
+
+				levelGeometry.SetActive (false);
 			}
 		}
 	}
