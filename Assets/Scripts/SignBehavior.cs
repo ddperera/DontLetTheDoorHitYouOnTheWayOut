@@ -4,10 +4,15 @@ using System.Collections;
 public class SignBehavior : MonoBehaviour {
 
 	public Rigidbody rb;
+	AudioSource aSource;
+	
+	private bool hasFallen;
 	// Use this for initialization
 	void Start () {
 		rb = GetComponent<Rigidbody>();
 		rb.isKinematic = true;
+		hasFallen = false;
+		aSource = GetComponent<AudioSource> ();
 	}
 	
 	// Update is called once per frame
@@ -17,6 +22,10 @@ public class SignBehavior : MonoBehaviour {
 	
 	void OnPlayerClicked() {
 		rb.isKinematic = false;
-		Debug.Log("sign fall", this);
+		if (!hasFallen) {
+			aSource.Play(44100/4);
+			hasFallen = true;
+		}
+		
 	}
 }
