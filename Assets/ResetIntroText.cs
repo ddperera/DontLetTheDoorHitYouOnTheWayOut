@@ -17,7 +17,6 @@ public class ResetIntroText : MonoBehaviour {
 	}
 
 	void OnTriggerEnter(Collider coll){
-		Debug.Log ("l");
 		if (coll.gameObject.transform.parent.gameObject == theText) {
 			theText.transform.position = resetPosition;
 			theText.GetComponent<Rigidbody2D> ().velocity = Vector2.zero;
