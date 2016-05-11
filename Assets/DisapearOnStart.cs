@@ -3,9 +3,10 @@ using System.Collections;
 
 public class DisapearOnStart : MonoBehaviour {
 
-	public float waitTime = 0.2f;
+	public float waitTime = 0.4f;
 
 	void Start() {
+		gameObject.SetActive (true);
 		StartCoroutine("Disapear");
 	}
 
@@ -14,6 +15,7 @@ public class DisapearOnStart : MonoBehaviour {
 		do {
 			yield return null;
 		} while (Time.time < time + waitTime);
+		transform.position = transform.position + Vector3.right * 40f;
 		gameObject.SetActive (false);
 	}
 }
