@@ -26,4 +26,10 @@ public class GameManager : MonoBehaviour {
 	void Start(){
 		firstTimePlaying = false;
 	}
+
+	void Update (){
+		if (Input.GetKey ("Q")) {
+			Application.Quit;
+		}
+	}
 }
