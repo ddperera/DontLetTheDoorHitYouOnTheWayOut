@@ -28,8 +28,8 @@ public class GameManager : MonoBehaviour {
 	}
 
 	void Update (){
-		if (Input.GetKey ("Q")) {
-			Application.Quit;
+		if (Input.GetKeyDown (KeyCode.Q)) {
+			Application.Quit ();
 		}
 	}
 }
